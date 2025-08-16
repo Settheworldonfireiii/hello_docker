@@ -30,6 +30,43 @@ RUN apt update && apt install wget -y && apt install software-properties-common 
   apt-get purge -y --auto-remove wget software-properties-common; \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache
 
+
+# Clean, noninteractive install + aggressive cache cleanup (safe to keep all installed pkgs)
+RUN set -eux; \
+  echo 'tzdata tzdata/Areas select America' | debconf-set-selections; \
+  echo 'tzdata tzdata/Zones/America select Los_Angeles' | debconf-set-selections; \
+  apt-get update; \
+  apt-get install -y --no-install-recommends \
+    tzdata \
+    software-properties-common netcat-openbsd kmod unzip openssh-server \
+    curl wget lsof zsh ccache tmux htop git-lfs tree \
+    build-essential cmake \
+    libopenmpi-dev libnuma1 libnuma-dev \
+    libibverbs-dev libibverbs1 libibumad3 \
+    librdmacm1 libnl-3-200 libnl-route-3-200 libnl-route-3-dev libnl-3-dev \
+    ibverbs-providers infiniband-diags perftest \
+    libgoogle-glog-dev libgtest-dev libjsoncpp-dev libunwind-dev \
+    libboost-all-dev libssl-dev \
+    libgrpc-dev libgrpc++-dev libprotobuf-dev protobuf-compiler-grpc \
+    pybind11-dev \
+    libhiredis-dev libcurl4-openssl-dev \
+    libczmq4 libczmq-dev \
+    libfabric-dev \
+    patchelf \
+    nvidia-dkms-550 \
+    devscripts debhelper fakeroot dkms check libsubunit0 libsubunit-dev; \
+  ln -sf /usr/bin/python3.12 /usr/bin/python; \
+  # ---- Cleanup: apt/lists, archives, metadata, tmp, and common caches ----
+  apt-get clean; \
+  rm -rf /var/lib/apt/lists/*; \
+  rm -rf /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/* /var/cache/apt/*.bin; \
+  rm -rf /var/cache/debconf/*-old; \
+  rm -rf /var/log/apt/*; \
+  rm -rf /tmp/* /var/tmp/*; \
+  # If any tools created caches (pip, wget, etc.), clear them too:
+  rm -rf /root/.cache
+
+
  
 RUN echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker
 RUN echo 'APT::Install-Recommends "0";' >> /etc/apt/apt.conf.d/00-docker
