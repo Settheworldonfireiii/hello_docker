@@ -24,9 +24,7 @@ RUN apt update && apt install wget -y && apt install software-properties-common 
  && python3 get-pip.py
 
   # pip: avoid caching wheels
-  RUN pip config set global.no-cache-dir true; \
-  # remove transient files and apt caches
-  rm -f get-pip.py; \
+  RUN rm -f get-pip.py; \
   apt-get purge -y --auto-remove wget software-properties-common; \
   rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache
 
