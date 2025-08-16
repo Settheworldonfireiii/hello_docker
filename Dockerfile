@@ -1,4 +1,5 @@
-FROM ubuntu:22.04
+ARG CUDA_VERSION=12.6.1
+FROM nvidia/cuda:${CUDA_VERSION}-cudnn-devel-ubuntu22.04
 RUN echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker
 RUN echo 'APT::Install-Recommends "0";' >> /etc/apt/apt.conf.d/00-docker
 RUN DEBIAN_FRONTEND=noninteractive \
