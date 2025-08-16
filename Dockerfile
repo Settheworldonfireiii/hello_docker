@@ -85,7 +85,7 @@ RUN ln -sf /usr/lib/x86_64-linux-gnu/libmlx5.so.1 /usr/lib/x86_64-linux-gnu/libm
 
 # Clone and install SGLang
 WORKDIR /sgl-workspace
-RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel html5lib six \
+RUN python3 -m pip install --upgrade pip setuptools wheel html5lib six \
  && git clone --depth=1 https://github.com/sgl-project/sglang.git \
  && cd sglang \
  && case "$CUDA_VERSION" in \
@@ -93,16 +93,6 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel html5li
       12.8.1) CUINDEX=128 ;; \
       12.9.1) CUINDEX=129 ;; \
       *) echo "Unsupported CUDA version: $CUDA_VERSION" && exit 1 ;; \
-    esac \
- && python3 -m pip install --no-cache-dir -e "python[${BUILD_TYPE}]" --extra-index-url https://download.pytorch.org/whl/cu${CUINDEX} \
- && python3 -m pip install --no-cache-dir nvidia-nccl-cu12==2.27.6 --force-reinstall --no-deps \
- && python3 -m flashinfer --download-cubin \
- && if [ "$CUDA_VERSION" = "12.8.1" ]; then \
-      python3 -m pip install --no-cache-dir https://github.com/sgl-project/whl/releases/download/v0.3.5/sgl_kernel-0.3.5+cu128-cp310-abi3-manylinux2014_x86_64.whl --force-reinstall --no-deps ; \
-    fi \
- && if [ "$CUDA_VERSION" = "12.9.1" ]; then \
-      python3 -m pip install --no-cache-dir https://github.com/sgl-project/whl/releases/download/v0.3.5/sgl_kernel-0.3.5+cu129-cp310-abi3-manylinux2014_x86_64.whl --force-reinstall --no-deps ; \
-    fi \
  && python3 -m pip cache purge
 
 
