@@ -93,6 +93,7 @@ RUN python3 -m pip install --upgrade pip setuptools wheel html5lib six \
       12.8.1) CUINDEX=128 ;; \
       12.9.1) CUINDEX=129 ;; \
       *) echo "Unsupported CUDA version: $CUDA_VERSION" && exit 1 ;; \
+    esac \
  && python3 -m pip cache purge
 
 
