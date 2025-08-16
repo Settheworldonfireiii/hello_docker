@@ -73,7 +73,7 @@ RUN mkdir -p /tmp/gdrcopy && cd /tmp \
  && cd gdrcopy/packages \
  && CUDA=/usr/local/cuda ./build-deb-packages.sh \
  && dpkg -i gdrdrv-dkms_*.deb libgdrapi_*.deb gdrcopy-tests_*.deb gdrcopy_*.deb \
- && cd / && rm -rf /tmp/gdrcopy &&
+ && cd / && rm -rf /tmp/gdrcopy;
  rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
  rm -rf /var/cache/*  rm -rf /var/log/* ; \
  rm -rf /tmp/* /var/tmp/
