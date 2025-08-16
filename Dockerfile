@@ -31,6 +31,7 @@ RUN apt update && apt install wget -y && apt install software-properties-common 
   rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache
 
 
+
 # Clean, noninteractive install + aggressive cache cleanup (safe to keep all installed pkgs)
 RUN set -eux; \
   echo 'tzdata tzdata/Areas select America' | debconf-set-selections; \
@@ -65,6 +66,20 @@ RUN set -eux; \
   rm -rf /tmp/* /var/tmp/*; \
   # If any tools created caches (pip, wget, etc.), clear them too:
   rm -rf /root/.cache
+
+    # GDRCopy installation
+RUN mkdir -p /tmp/gdrcopy && cd /tmp \
+ && git clone https://github.com/NVIDIA/gdrcopy.git -b v2.4.4 \
+ && cd gdrcopy/packages \
+ && CUDA=/usr/local/cuda ./build-deb-packages.sh \
+ && dpkg -i gdrdrv-dkms_*.deb libgdrapi_*.deb gdrcopy-tests_*.deb gdrcopy_*.deb \
+ && cd / && rm -rf /tmp/gdrcopy &&
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+
+
+
 
 
  
