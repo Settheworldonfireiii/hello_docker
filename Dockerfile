@@ -121,6 +121,19 @@ RUN python3 -m pip install --upgrade pip setuptools wheel html5lib six \
  rm -rf /var/cache/*  rm -rf /var/log/* ; \
  rm -rf /tmp/* /var/tmp/
 
+ 
+ RUN if [ "$CUDA_VERSION" = "12.8.1" ]; then \
+      python3 -m pip install --no-cache-dir https://github.com/sgl-project/whl/releases/download/v0.3.5/sgl_kernel-0.3.5+cu128-cp310-abi3-manylinux2014_x86_64.whl --force-reinstall --no-deps ; \
+    fi \
+ && if [ "$CUDA_VERSION" = "12.9.1" ]; then \
+      python3 -m pip install --no-cache-dir https://github.com/sgl-project/whl/releases/download/v0.3.5/sgl_kernel-0.3.5+cu129-cp310-abi3-manylinux2014_x86_64.whl --force-reinstall --no-deps ; \
+    fi \
+&& python3 -m pip cache purge ; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+
 
 
 
