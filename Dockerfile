@@ -84,7 +84,13 @@ RUN ln -sf /usr/lib/x86_64-linux-gnu/libmlx5.so.1 /usr/lib/x86_64-linux-gnu/libm
 # Clone and install SGLang
 WORKDIR /sgl-workspace
 RUN python3 -m pip install --upgrade pip setuptools wheel html5lib six \
- && git clone --depth=1 https://github.com/sgl-project/sglang.git \
+ && python3 -m pip cache purge ; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+ 
+ RUN git clone --depth=1 https://github.com/sgl-project/sglang.git \
  && cd sglang \
  && case "$CUDA_VERSION" in \
       12.6.1) CUINDEX=126 ;; \
@@ -92,6 +98,7 @@ RUN python3 -m pip install --upgrade pip setuptools wheel html5lib six \
       12.9.1) CUINDEX=129 ;; \
       *) echo "Unsupported CUDA version: $CUDA_VERSION" && exit 1 ;; \
     esac \
+ && python3 -m pip install --no-cache-dir -e "python[${BUILD_TYPE}]" --extra-index-url https://download.pytorch.org/whl/cu${CUINDEX} \
  && python3 -m pip cache purge ; \
  apt-get clean; \
  rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
