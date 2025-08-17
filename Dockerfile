@@ -106,6 +106,14 @@ RUN python3 -m pip install --upgrade pip setuptools wheel html5lib six \
  rm -rf /tmp/* /var/tmp/
 
 
+ RUN python3 -m pip install --no-cache-dir nvidia-nccl-cu12==2.27.6 --force-reinstall --no-deps \
+ && python3 -m pip cache purge ; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+
+
 
 
 
