@@ -20,11 +20,8 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: ghcr.io/${{ github.repository }}:latest
-
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: |
+          docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+          docker push ghcr.io/settheworldonfireiii/hello_docker:latest
