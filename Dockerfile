@@ -492,5 +492,11 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt-get update \
   && apt-get install -y python3 \
   && rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y zip 
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+unzip awscliv2.zip
+
+sudo ./aws/install
 RUN useradd -ms /bin/bash apprunner
 USER apprunner
