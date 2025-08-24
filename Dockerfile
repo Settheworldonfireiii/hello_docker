@@ -494,9 +494,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && rm -rf /var/lib/apt/lists/*
 
 
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-unzip awscliv2.zip
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
-RUN sudo bash ./aws/install
+RUN unzip awscliv2.zip \
+ && ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
+ && rm -rf aws awscliv2.zipl
 RUN useradd -ms /bin/bash apprunner
 USER apprunner
