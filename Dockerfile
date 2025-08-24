@@ -15,7 +15,7 @@ ENV PATH="${PATH}:/usr/local/nvidia/bin" \
     
 
 RUN apt update && apt install wget -y && apt install software-properties-common -y \
- && add-apt-repository ppa:deadsnakes/ppa -y \
+ && apt install zip -y && add-apt-repository ppa:deadsnakes/ppa -y \
   && apt install python3.12-full python3.12-dev python3.10-venv -y \
  && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 \
  && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 2 \
