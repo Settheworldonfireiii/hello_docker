@@ -502,12 +502,24 @@ RUN unzip awscliv2.zip \
  
 RUN useradd -ms /bin/bash apprunner
 # Copy the startup script and make it executable
-COPY start.sh /usr/local/bin/
+# Install AWS CLI and friends
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      awscli bash ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Make sure the target directory exists and is world-writable
+RUN mkdir -p /models && chmod 777 /models
+
+# Default environment variables (can be overridden at runtime)
+ENV MODEL_DIR=/models
+ENV COS_REGION=us-south
+ENV COS_BUCKET=ossgpt
+ENV COS_ENDPOINT=https://s3.us-south.cloud-object-storage.appdomain.cloud
+ENV COS_NO_SIGN_REQUEST=1
+
+COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
-# Set the entrypoint to the startup script
-ENTRYPOINT ["start.sh"]
-
-# Set a default command if needed
-CMD ["your_default_application_command"]
+ENTRYPOINT ["/usr/local/bin/start.sh"]
+CMD ["bash"]
 USER apprunner
