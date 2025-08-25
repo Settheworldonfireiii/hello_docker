@@ -499,5 +499,15 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 RUN unzip awscliv2.zip \
  && ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
  && rm -rf aws awscliv2.zipl
+ 
 RUN useradd -ms /bin/bash apprunner
+# Copy the startup script and make it executable
+COPY start.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/start.sh
+
+# Set the entrypoint to the startup script
+ENTRYPOINT ["start.sh"]
+
+# Set a default command if needed
+CMD ["your_default_application_command"]
 USER apprunner
