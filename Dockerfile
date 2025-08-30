@@ -506,7 +506,14 @@ RUN useradd -ms /bin/bash apprunner
 RUN apt-get update && apt-get install -y --no-install-recommends \
       awscli bash ca-certificates \
     && rm -rf /var/lib/apt/lists/*
-
+    
+RUN python3 -m pip install "sglang[cuda]" \
+ && python3 -m pip cache purge ; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+ 
 # Make sure the target directory exists and is world-writable
 RUN mkdir -p /models && chmod 777 /models
 
