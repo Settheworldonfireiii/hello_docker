@@ -143,6 +143,42 @@ RUN python3 -m pip install --no-cache-dir "sglang[cuda]" \
  rm -rf /var/cache/*  rm -rf /var/log/* ; \
  rm -rf /tmp/* /var/tmp/
 
+ RUN python3 -m pip install --no-cache-dir fastapi==0.114.0 \
+ && python3 -m pip cache purge ; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+ 
+
+RUN python3 -m pip install --no-cache-dir uvicorn[standard]==0.23.2 \
+ && python3 -m pip cache purge ; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+
+
+ 
+RUN python3 -m pip install --no-cache-dir python-multipart==0.0.6  \
+ && python3 -m pip cache purge ; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+
+
+ 
+ 
+RUN python3 -m pip install --no-cache-dir pydantic==2.7.0  \
+ && python3 -m pip cache purge ; \
+ apt-get clean; \
+ rm -rf /var/lib/apt/lists/* /var/cache/apt/* /root/.cache; \
+ rm -rf /var/cache/*  rm -rf /var/log/* ; \
+ rm -rf /tmp/* /var/tmp/
+
+
+ 
 # Then (optional) override the kernel with a specific CUDA build
 ARG CUDA_VERSION
 RUN set -eux; \
